@@ -149,81 +149,81 @@ html = r"""<!DOCTYPE html>
     .badge-none    { background: rgba(255,255,255,.1); color: #cbd5e1; }
 
     /* Report body */
-    .report-body { padding: 16px 18px 20px; }
+    .report-body { padding: 14px 16px 18px; display: flex; flex-direction: column; gap: 16px; }
 
-    /* Section card */
-    .section-card {
-      border: 1px solid var(--slate-200);
-      border-radius: 10px;
-      margin-bottom: 12px;
-      overflow: hidden;
-    }
-    .section-title {
-      background: var(--primary-bg);
-      padding: 8px 14px;
-      font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
-      letter-spacing: .07em; color: var(--primary-dark);
-      border-bottom: 1px solid var(--primary-bg2);
-    }
-    .section-body { padding: 12px 14px; }
-
-    /* Landscape narrative */
-    .landscape-text {
-      font-size: 0.82rem; line-height: 1.72; color: var(--slate-700);
+    /* Section heading (above fact sheet / details) */
+    .fact-title {
+      font-size: 0.66rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .08em; color: var(--slate-400); margin-bottom: 8px;
     }
 
-    /* Policy rows */
-    .policy-row {
-      display: grid; grid-template-columns: 1fr auto;
-      gap: 10px; align-items: start;
-      padding: 8px 0; border-bottom: 1px solid var(--slate-100);
+    /* ── Policies at a glance ── */
+    .policy-list {
+      border: 1px solid var(--slate-200); border-radius: 10px; overflow: hidden;
     }
-    .policy-row:last-child { border-bottom: none; padding-bottom: 0; }
-    .policy-row-left { }
-    .policy-feature {
-      font-size: 0.75rem; font-weight: 600; color: var(--slate-700);
-      margin-bottom: 3px;
+    .policy-item { border-bottom: 1px solid var(--slate-100); }
+    .policy-item:last-child { border-bottom: none; }
+    .policy-head {
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      width: 100%; background: white; border: none; font-family: inherit;
+      padding: 11px 13px; text-align: left; cursor: default;
     }
-    .policy-text {
-      font-size: 0.78rem; line-height: 1.65; color: var(--slate-600);
+    .policy-item.expandable .policy-head { cursor: pointer; }
+    .policy-item.expandable .policy-head:hover { background: var(--slate-50); }
+    .policy-name { font-size: 0.82rem; font-weight: 600; color: var(--slate-700); }
+    .policy-right { display: flex; align-items: center; gap: 9px; flex-shrink: 0; }
+    .caret {
+      color: var(--slate-300); font-size: 0.62rem; width: 9px;
+      transition: transform .18s ease; display: inline-block;
     }
-    .policy-text em { font-style: italic; color: var(--slate-400); }
+    .policy-item.open .caret, .accordion.open .caret { transform: rotate(90deg); }
+    .policy-detail { display: none; padding: 0 13px 13px; }
+    .policy-item.open .policy-detail { display: block; }
+    .policy-detail p { font-size: 0.8rem; line-height: 1.68; color: var(--slate-600); }
+    .policy-detail p + p { margin-top: 8px; }
 
     /* Yes / No / N/A badge */
     .yn-badge {
       display: inline-block; padding: 2px 9px; border-radius: 99px;
-      font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+      font-size: 0.66rem; font-weight: 700; text-transform: uppercase;
       letter-spacing: .06em; white-space: nowrap; flex-shrink: 0;
     }
     .yn-yes { background: var(--yes-bg); color: var(--yes-fg); }
     .yn-no  { background: var(--no-bg);  color: var(--no-fg); }
     .yn-na  { background: var(--na-bg);  color: var(--na-fg); }
 
-    /* Detail rows (size / eligibility / benefit) */
-    .detail-grid {
-      display: grid; grid-template-columns: 1fr; gap: 8px;
+    /* ── Program details (key / value) ── */
+    .detail-rows { display: flex; flex-direction: column; gap: 10px; }
+    .detail-row {
+      display: grid; grid-template-columns: 104px 1fr; gap: 12px; align-items: baseline;
     }
-    .detail-item {}
-    .detail-label {
-      font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
-      letter-spacing: .07em; color: var(--primary); margin-bottom: 2px;
+    .detail-k {
+      font-size: 0.66rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .05em; color: var(--primary);
     }
-    .detail-value {
-      font-size: 0.8rem; line-height: 1.65; color: var(--slate-700);
-    }
-    .detail-value.na { color: var(--slate-400); font-style: italic; }
+    .detail-v { font-size: 0.8rem; line-height: 1.6; color: var(--slate-700); }
 
-    /* Active cities */
-    .cities-text {
-      font-size: 0.8rem; line-height: 1.7; color: var(--slate-700);
+    /* ── Collapsible accordions ── */
+    .accordion { border: 1px solid var(--slate-200); border-radius: 10px; overflow: hidden; }
+    .acc-head {
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+      width: 100%; background: var(--slate-50); border: none; font-family: inherit;
+      padding: 11px 13px; text-align: left; cursor: pointer;
+      font-size: 0.8rem; font-weight: 600; color: var(--slate-700);
     }
+    .acc-head:hover { background: var(--primary-bg); color: var(--primary-dark); }
+    .acc-body { display: none; padding: 12px 13px; border-top: 1px solid var(--slate-100); }
+    .accordion.open .acc-body { display: block; }
+    .acc-body p { font-size: 0.8rem; line-height: 1.7; color: var(--slate-600); }
+    .acc-body p + p { margin-top: 9px; }
 
     /* Sources */
     .sources-list { list-style: none; padding: 0; }
-    .sources-list li { margin-bottom: 5px; }
+    .sources-list li { margin-bottom: 8px; }
+    .sources-list li:last-child { margin-bottom: 0; }
     .sources-list a {
-      font-size: 0.76rem; color: var(--primary); text-decoration: none;
-      word-break: break-all; line-height: 1.4; display: block;
+      font-size: 0.78rem; color: var(--primary); text-decoration: none;
+      line-height: 1.45; display: block;
     }
     .sources-list a:hover { text-decoration: underline; }
 
@@ -355,27 +355,23 @@ function ynBadge(status) {
   return '<span class="yn-badge ' + cls + '">' + esc(status) + '</span>';
 }
 
-function policyRow(featureName, status, text) {
-  const hasText = text && text.trim();
-  const textHtml = hasText
-    ? '<div class="policy-text">' + esc(text).replace(/\n/g, '<br>') + '</div>'
-    : '<div class="policy-text"><em>No information available.</em></div>';
-  return '<div class="policy-row">'
-    + '<div class="policy-row-left">'
-    + '<div class="policy-feature">' + esc(featureName) + '</div>'
-    + textHtml
-    + '</div>'
-    + '<div>' + ynBadge(status) + '</div>'
-    + '</div>';
+// Minimal, safe markdown: escape HTML first, then render **bold**.
+function inlineMd(s) {
+  return esc(s).replace(/\*\*([^*]+?)\*\*/g, '<strong>$1</strong>');
+}
+// Render text into <p> blocks (split on blank lines) with inline bold.
+function blocks(s) {
+  return (s || '').split(/\n\n+/).map(function(p) {
+    return '<p>' + inlineMd(p) + '</p>';
+  }).join('');
+}
+// True when a detail value carries real content (not blank / N/A).
+function hasVal(v) {
+  return v && v.trim() && v.trim().toUpperCase() !== 'N/A';
 }
 
-function detailItem(label, value) {
-  const isNA = !value || value.trim() === 'N/A';
-  return '<div class="detail-item">'
-    + '<div class="detail-label">' + esc(label) + '</div>'
-    + '<div class="detail-value' + (isNA ? ' na' : '') + '">'
-    + (isNA ? 'N/A' : esc(value).replace(/\n/g, '<br>'))
-    + '</div></div>';
+function toggleAccordion(headEl) {
+  headEl.parentElement.classList.toggle('open');
 }
 
 /* ════════════════════════════════════
@@ -391,8 +387,8 @@ function showWelcome() {
     '<div class="welcome-wrap">'
     + '<div class="welcome-icon">&#127759;</div>'
     + '<div class="welcome-title">Community Solar State Reports</div>'
-    + '<p class="welcome-body">This map shows the state of community-owned solar (COS) policy across all 50 US states. '
-    + 'Click any state to read its detailed policy report.</p>'
+    + '<p class="welcome-body">This map shows the state of community-owned solar (COS) policy across all 50 states, '
+    + 'Washington DC, and the US territories. Click any state to read its detailed policy report.</p>'
     + '<div class="count-pills">'
     + '<span class="count-pill active">' + na + ' Active Programs</span>'
     + '<span class="count-pill limited">' + nl + ' Limited / Emerging</span>'
@@ -413,7 +409,7 @@ function showWelcome() {
    ════════════════════════════════════ */
 function showStateReport(stateName) {
   const r = STATE_REPORTS[stateName] || {};
-  const status  = r.status  || 'unknown';
+  const status  = r.status   || 'unknown';
   const pol     = r.policies || {};
   const det     = r.details  || {};
   const sources = r.sources  || [];
@@ -421,61 +417,64 @@ function showStateReport(stateName) {
   const badgeClass = { active:'badge-active', limited:'badge-limited', none:'badge-none' }[status] || 'badge-none';
   const badgeText  = { active:'Active Program', limited:'Limited / Emerging', none:'No Program' }[status] || 'Unknown';
 
-  // ── Section 1: Community Ownership Landscape ──
-  const landscapeHtml = r.landscape
-    ? '<div class="section-card">'
-      + '<div class="section-title">Community Ownership Landscape</div>'
-      + '<div class="section-body">'
-      + '<div class="landscape-text">' + esc(r.landscape).replace(/\n/g, '<br>') + '</div>'
-      + '</div></div>'
-    : '';
-
-  // ── Section 2: Enabling / Inhibiting Policies ──
-  const vnm   = pol.vnm   || {};
-  const cs    = pol.cs    || {};
-  const other = pol.other || {};
+  // ── Fact sheet: policies at a glance (each row expands its explanation) ──
+  function policyItem(name, p) {
+    p = p || {};
+    const expandable = !!(p.text && p.text.trim());
+    return '<div class="policy-item' + (expandable ? ' expandable' : '') + '">'
+      + '<button type="button" class="policy-head"'
+        + (expandable ? ' onclick="toggleAccordion(this)"' : '') + '>'
+      + '<span class="policy-name">' + esc(name) + '</span>'
+      + '<span class="policy-right">' + ynBadge(p.status)
+        + (expandable ? '<span class="caret">&#9656;</span>' : '') + '</span>'
+      + '</button>'
+      + (expandable ? '<div class="policy-detail">' + blocks(p.text) + '</div>' : '')
+      + '</div>';
+  }
   const policiesHtml =
-    '<div class="section-card">'
-    + '<div class="section-title">Enabling / Inhibiting Policies &amp; Programs</div>'
-    + '<div class="section-body">'
-    + policyRow('Virtual or Remote Net Metering', vnm.status,   vnm.text)
-    + policyRow('Community Solar',                cs.status,    cs.text)
-    + policyRow('Other State Support for COS',    other.status, other.text)
+    '<div class="fact-section">'
+    + '<div class="fact-title">Policies at a glance</div>'
+    + '<div class="policy-list">'
+    + policyItem('Community Solar', pol.cs)
+    + policyItem('Virtual / Remote Net Metering', pol.vnm)
+    + policyItem('Other State Support', pol.other)
     + '</div></div>';
 
-  // ── Section 3: Program Details ──
-  const hasDetails = (det.size && det.size !== 'N/A')
-                  || (det.eligibility && det.eligibility !== 'N/A')
-                  || (det.benefitDist && det.benefitDist !== 'N/A');
-  const detailsHtml =
-    '<div class="section-card">'
-    + '<div class="section-title">Program Details</div>'
-    + '<div class="section-body"><div class="detail-grid">'
-    + detailItem('Size', det.size || '')
-    + detailItem('Eligibility', det.eligibility || '')
-    + detailItem('Benefit Distribution', det.benefitDist || '')
-    + '</div></div></div>';
-
-  // ── Section 4: Active Cities / Communities ──
-  const citiesHtml = r.activeCities
-    ? '<div class="section-card">'
-      + '<div class="section-title">Active Cities &amp; Communities</div>'
-      + '<div class="section-body">'
-      + '<div class="cities-text">' + esc(r.activeCities).replace(/\n/g,'<br>') + '</div>'
-      + '</div></div>'
+  // ── Fact sheet: program details (only populated rows; hidden if all N/A) ──
+  function detailRow(label, v) {
+    return hasVal(v)
+      ? '<div class="detail-row"><span class="detail-k">' + label + '</span>'
+        + '<span class="detail-v">' + inlineMd(v) + '</span></div>'
+      : '';
+  }
+  const detailRows = detailRow('Size', det.size)
+    + detailRow('Eligibility', det.eligibility)
+    + detailRow('Benefit Dist.', det.benefitDist);
+  const detailsHtml = detailRows
+    ? '<div class="fact-section"><div class="fact-title">Program details</div>'
+      + '<div class="detail-rows">' + detailRows + '</div></div>'
     : '';
 
-  // ── Section 5: Sources ──
+  // ── Collapsible accordions for the longer narrative ──
+  function accordion(title, bodyHtml) {
+    return '<div class="accordion">'
+      + '<button type="button" class="acc-head" onclick="toggleAccordion(this)">'
+      + '<span>' + esc(title) + '</span><span class="caret">&#9656;</span>'
+      + '</button>'
+      + '<div class="acc-body">' + bodyHtml + '</div></div>';
+  }
+  const landscapeHtml = (r.landscape && r.landscape.trim())
+    ? accordion('Landscape overview', blocks(r.landscape)) : '';
+  const citiesHtml = (r.activeCities && r.activeCities.trim())
+    ? accordion('Active cities & communities', blocks(r.activeCities)) : '';
   const sourcesHtml = sources.length
-    ? '<div class="section-card">'
-      + '<div class="section-title">Sources (' + sources.length + ')</div>'
-      + '<div class="section-body">'
-      + '<ul class="sources-list">'
-      + sources.map(s =>
-          '<li><a href="' + esc(s.url) + '" target="_blank" rel="noopener noreferrer">'
-          + esc(s.title || s.url) + '</a></li>'
-        ).join('')
-      + '</ul></div></div>'
+    ? accordion('Sources (' + sources.length + ')',
+        '<ul class="sources-list">'
+        + sources.map(function(s) {
+            return '<li><a href="' + esc(s.url) + '" target="_blank" rel="noopener noreferrer">'
+              + esc(s.title || s.url) + '</a></li>';
+          }).join('')
+        + '</ul>')
     : '';
 
   document.getElementById('panel-content').innerHTML =
@@ -486,9 +485,9 @@ function showStateReport(stateName) {
     + '<span class="report-status-badge ' + badgeClass + '">' + badgeText + '</span>'
     + '</div>'
     + '<div class="report-body">'
-    + landscapeHtml
     + policiesHtml
     + detailsHtml
+    + landscapeHtml
     + citiesHtml
     + sourcesHtml
     + '</div></div>';
