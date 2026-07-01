@@ -52,17 +52,22 @@ def strip_table(s):
     return s.replace('|', ' ')
 
 def normalize_prose(s):
-    """Collapse soft line-wraps into flowing text; keep blank-line paragraph
-    breaks. Fixes the ragged mid-sentence breaks from the old PDF path.
+    """Keep the Doc's intentional line breaks (paragraphs and bullet items) on
+    their own lines so the renderer can lay them out with real spacing.
 
-    Inline citation links are reduced to their text (the URLs live in the
-    Sources list); **bold** is left intact for the renderer to style."""
+    The source is a Google Doc markdown export: inside a cell every newline is an
+    intentional break (the Doc never soft-wraps), so — unlike the old PDF path —
+    we must NOT collapse single newlines into spaces, or paragraph/list gaps are
+    lost. Inline citation links are reduced to their text (the URLs live in the
+    Sources list); **bold** is left intact for the renderer. Bullet items written
+    as "  - " (inline or after a break) are normalized onto their own "- " line."""
     s = re.sub(r'\[([^\]]*?)\]\(https?://[^)\s]*?\)', r'\1', s)  # [text](url) -> text
     s = re.sub(r'\s*<https?://[^>\s]+>', '', s)                  # drop bare <url>
-    paras = re.split(r'\n[ \t]*\n+', s.strip())   # split on blank lines
-    paras = [re.sub(r'\s*\n\s*', ' ', p) for p in paras]  # soft wrap -> space
-    paras = [re.sub(r'[ \t]{2,}', ' ', p).strip() for p in paras]
-    return '\n\n'.join(p for p in paras if p)
+    s = re.sub(r'[ \t]*\n[ \t]*', '\n', s)        # tidy whitespace around breaks
+    s = re.sub(r'[ \t]{2,}-[ \t]+', '\n- ', s)    # inline "  - " bullet -> own line
+    s = re.sub(r'\n-[ \t]+', '\n- ', s)           # normalize bullet markers
+    lines = [re.sub(r'[ \t]{2,}', ' ', ln).strip() for ln in s.split('\n')]
+    return '\n'.join(ln for ln in lines if ln)
 
 # Labels that may trail into a slice from the next table row; cut them off.
 TRAILING_LABELS = [
@@ -92,7 +97,12 @@ def status_and_text(seg):
         seg = seg[m.end():]
     seg = cut_trailing(seg)
     seg = strip_table(seg)
-    return status, normalize_prose(seg)
+    text = normalize_prose(seg)
+    # The Doc export prepends a stray "D" to some policy explanations
+    # (e.g. "DVirtual...", "DSigned..."); it always precedes a capital letter,
+    # so a real sentence ("Delaware...", "D.C. ...") is never affected.
+    text = re.sub(r'^D(?=[A-Z])', '', text)
+    return status, text
 
 def plain_field(seg, label):
     """Clean a non-status cell (landscape, size, eligibility, benefit, cities)."""
