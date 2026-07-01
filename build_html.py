@@ -467,7 +467,7 @@ function showStateReport(stateName) {
     + '<div class="policy-list">'
     + policyItem('Community Solar', pol.cs)
     + policyItem('Virtual / Remote Net Metering', pol.vnm)
-    + policyItem('Other State Support', pol.other)
+    + policyItem('Other State Support for COS', pol.other)
     + '</div></div>';
 
   // ── Fact sheet: program details (only populated rows; hidden if all N/A) ──
