@@ -182,6 +182,16 @@ html = r"""<!DOCTYPE html>
     .policy-detail p { font-size: 0.8rem; line-height: 1.68; color: var(--slate-600); }
     .policy-detail p + p { margin-top: 8px; }
 
+    /* ── Bullet lists inside prose blocks ── */
+    .md-list { list-style: disc; margin: 7px 0 0; padding-left: 20px; }
+    .md-list li { line-height: 1.6; margin-bottom: 5px; }
+    .md-list li:last-child { margin-bottom: 0; }
+    p + .md-list { margin-top: 7px; }
+    .policy-detail .md-list li { font-size: 0.8rem; color: var(--slate-600); }
+    .acc-body .md-list li { font-size: 0.8rem; color: var(--slate-600); }
+    .detail-v .md-list li { font-size: 0.8rem; color: var(--slate-700); }
+    .detail-v p + p { margin-top: 6px; }
+
     /* Yes / No / N/A badge */
     .yn-badge {
       display: inline-block; padding: 2px 9px; border-radius: 99px;
@@ -359,11 +369,31 @@ function ynBadge(status) {
 function inlineMd(s) {
   return esc(s).replace(/\*\*([^*]+?)\*\*/g, '<strong>$1</strong>');
 }
-// Render text into <p> blocks (split on blank lines) with inline bold.
+// Render text into <p> paragraphs and <ul> bullet lists, preserving the
+// Google Doc's line breaks (each line is its own paragraph; "- " lines are
+// grouped into a bulleted list). Inline **bold** is rendered per line.
 function blocks(s) {
-  return (s || '').split(/\n\n+/).map(function(p) {
-    return '<p>' + inlineMd(p) + '</p>';
-  }).join('');
+  const lines = (s || '').split('\n').map(function(l) { return l.trim(); })
+                         .filter(Boolean);
+  let html = '', items = [];
+  function flushList() {
+    if (items.length) {
+      html += '<ul class="md-list">'
+        + items.map(function(t) { return '<li>' + inlineMd(t) + '</li>'; }).join('')
+        + '</ul>';
+      items = [];
+    }
+  }
+  lines.forEach(function(ln) {
+    if (ln.indexOf('- ') === 0) {
+      items.push(ln.slice(2));
+    } else {
+      flushList();
+      html += '<p>' + inlineMd(ln) + '</p>';
+    }
+  });
+  flushList();
+  return html;
 }
 // True when a detail value carries real content (not blank / N/A).
 function hasVal(v) {
@@ -444,7 +474,7 @@ function showStateReport(stateName) {
   function detailRow(label, v) {
     return hasVal(v)
       ? '<div class="detail-row"><span class="detail-k">' + label + '</span>'
-        + '<span class="detail-v">' + inlineMd(v) + '</span></div>'
+        + '<div class="detail-v">' + blocks(v) + '</div></div>'
       : '';
   }
   const detailRows = detailRow('Size', det.size)
@@ -537,9 +567,12 @@ showWelcome();
 </body>
 </html>"""
 
-with open('community_solar_reports.html', 'w', encoding='utf-8') as f:
-    f.write(html)
+# Write both the canonical page name and index.html so the site's root URL
+# (https://<user>.github.io/<repo>/) serves the map directly instead of 404ing.
+for out_name in ('community_solar_reports.html', 'index.html'):
+    with open(out_name, 'w', encoding='utf-8') as f:
+        f.write(html)
 
 import os
-size = os.path.getsize('community_solar_reports.html')
-print(f'Built community_solar_reports.html  ({size:,} bytes / {size/1024:.0f} KB)')
+size = os.path.getsize('index.html')
+print(f'Built community_solar_reports.html + index.html  ({size:,} bytes / {size/1024:.0f} KB)')
