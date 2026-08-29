@@ -525,9 +525,11 @@ function showStateReport(stateName) {
   const detailRows = detailRow('Size', det.size)
     + detailRow('Eligibility', det.eligibility)
     + detailRow('Benefit Dist.', det.benefitDist);
+  // Collapsed by default: for states with an active program this block runs
+  // to ~1,000 characters, which swamped the panel when it sat open while
+  // every other long section was behind an accordion.
   const detailsHtml = detailRows
-    ? '<div class="fact-section"><div class="fact-title">Program details</div>'
-      + '<div class="detail-rows">' + detailRows + '</div></div>'
+    ? accordion('Program details', '<div class="detail-rows">' + detailRows + '</div>')
     : '';
 
   // ── Collapsible accordions for the longer narrative ──
