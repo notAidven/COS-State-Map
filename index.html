@@ -89,26 +89,47 @@
     .welcome-icon { font-size: 2rem; margin-bottom: 10px; }
     .welcome-title { font-size: 1.05rem; font-weight: 700; color: var(--primary-dark); margin-bottom: 8px; }
     .welcome-body  { font-size: 0.82rem; line-height: 1.65; color: var(--slate-600); }
-    .count-pills   { margin-top: 14px; display: flex; gap: 8px; flex-wrap: wrap; }
-    .count-pill {
-      border-radius: 99px; padding: 4px 13px;
-      font-size: 0.75rem; font-weight: 600;
+    /* ── Legend (sits above the map, always visible) ── */
+    .map-legend {
+      display: flex; flex-wrap: wrap; align-items: stretch; gap: 8px 18px;
+      background: white; border: 1px solid var(--slate-200); border-radius: 12px;
+      padding: 12px 16px; margin-bottom: 14px; box-shadow: var(--shadow);
     }
-    .count-pill.active  { background: var(--primary-bg);  color: var(--primary-dark); }
-    .count-pill.limited { background: #f0fdfa; color: #0d9488; }
-    .count-pill.none    { background: var(--slate-100); color: var(--slate-500); }
-
-    /* ── Legend ── */
-    .legend {
-      margin-top: 14px; padding: 12px 14px;
-      background: var(--slate-50); border-radius: 10px; border: 1px solid var(--slate-200);
+    .map-legend .legend-title {
+      font-size: 0.68rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .07em; color: var(--slate-500);
+      align-self: center; padding-right: 18px;
+      border-right: 1px solid var(--slate-200); white-space: nowrap;
     }
-    .legend-title { font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
-                    letter-spacing: .06em; color: var(--slate-400); margin-bottom: 8px; }
-    .legend-row { display: flex; align-items: center; gap: 8px; font-size: 0.78rem;
-                  color: var(--slate-600); margin-bottom: 5px; }
+    .legend-item { display: flex; align-items: flex-start; gap: 8px;
+                   flex: 1 1 190px; min-width: 175px; }
     .legend-swatch { width: 13px; height: 13px; border-radius: 3px; flex-shrink: 0;
-                     border: 1px solid rgba(0,0,0,.1); }
+                     margin-top: 3px; border: 1px solid rgba(0,0,0,.12); }
+    .legend-label { font-size: 0.78rem; font-weight: 600; color: var(--slate-700);
+                    line-height: 1.3; }
+    .legend-desc  { font-size: 0.69rem; color: var(--slate-500); line-height: 1.45;
+                    margin-top: 2px; }
+    @media (max-width: 760px) {
+      .map-legend .legend-title { border-right: none; padding-right: 0; flex: 1 1 100%; }
+    }
+
+    /* ── Status explainer cards (welcome panel) ── */
+    .status-guide { display: flex; flex-direction: column; gap: 9px; margin-top: 14px; }
+    .status-card {
+      border: 1px solid var(--slate-200); border-left-width: 4px;
+      border-radius: 8px; padding: 10px 12px; background: var(--slate-50);
+    }
+    .status-card.active  { border-left-color: #0f766e; }
+    .status-card.limited { border-left-color: #14b8a6; }
+    .status-card.none    { border-left-color: #99f6e4; }
+    .status-card.unknown { border-left-color: #94a3b8; }
+    .status-card-head {
+      display: flex; align-items: baseline; justify-content: space-between; gap: 8px;
+      font-size: 0.8rem; font-weight: 700; color: var(--slate-800); margin-bottom: 4px;
+    }
+    .status-card-count { font-size: 0.7rem; font-weight: 600; color: var(--slate-500);
+                         white-space: nowrap; }
+    .status-card-desc { font-size: 0.73rem; line-height: 1.55; color: var(--slate-600); }
 
     /* ══════════════════════════════════════
        STATE REPORT PANEL
@@ -151,25 +172,27 @@
 
     /* ── Policies at a glance ── */
     .policy-list {
-      border: 1px solid var(--slate-200); border-radius: 10px; overflow: hidden;
+      border: 1px solid var(--slate-300); border-radius: 10px; overflow: hidden;
     }
-    .policy-item { border-bottom: 1px solid var(--slate-100); }
+    .policy-item { border-bottom: 1px solid var(--slate-300); }
     .policy-item:last-child { border-bottom: none; }
     .policy-head {
       display: flex; align-items: center; justify-content: space-between; gap: 10px;
-      width: 100%; background: white; border: none; font-family: inherit;
+      width: 100%; background: var(--slate-200); border: none; font-family: inherit;
       padding: 11px 13px; text-align: left; cursor: default;
     }
     .policy-item.expandable .policy-head { cursor: pointer; }
-    .policy-item.expandable .policy-head:hover { background: var(--slate-50); }
-    .policy-name { font-size: 0.82rem; font-weight: 600; color: var(--slate-700); }
+    .policy-item.expandable .policy-head:hover { background: var(--slate-300); }
+    .policy-item.open .policy-head { background: var(--slate-300); }
+    .policy-name { font-size: 0.82rem; font-weight: 600; color: var(--slate-800); }
     .policy-right { display: flex; align-items: center; gap: 9px; flex-shrink: 0; }
     .caret {
-      color: var(--slate-300); font-size: 0.62rem; width: 9px;
+      color: var(--slate-500); font-size: 0.62rem; width: 9px;
       transition: transform .18s ease; display: inline-block;
     }
     .policy-item.open .caret, .accordion.open .caret { transform: rotate(90deg); }
-    .policy-detail { display: none; padding: 0 13px 13px; }
+    .policy-detail { display: none; padding: 12px 13px; background: white;
+                     border-top: 1px solid var(--slate-200); }
     .policy-item.open .policy-detail { display: block; }
     .policy-detail p { font-size: 0.8rem; line-height: 1.68; color: var(--slate-600); }
     .policy-detail p + p { margin-top: 8px; }
@@ -206,15 +229,17 @@
     .detail-v { font-size: 0.8rem; line-height: 1.6; color: var(--slate-700); }
 
     /* ── Collapsible accordions ── */
-    .accordion { border: 1px solid var(--slate-200); border-radius: 10px; overflow: hidden; }
+    .accordion { border: 1px solid var(--slate-300); border-radius: 10px; overflow: hidden; }
     .acc-head {
       display: flex; align-items: center; justify-content: space-between; gap: 10px;
-      width: 100%; background: var(--slate-50); border: none; font-family: inherit;
+      width: 100%; background: var(--slate-200); border: none; font-family: inherit;
       padding: 11px 13px; text-align: left; cursor: pointer;
-      font-size: 0.8rem; font-weight: 600; color: var(--slate-700);
+      font-size: 0.8rem; font-weight: 600; color: var(--slate-800);
     }
-    .acc-head:hover { background: var(--primary-bg); color: var(--primary-dark); }
-    .acc-body { display: none; padding: 12px 13px; border-top: 1px solid var(--slate-100); }
+    .acc-head:hover { background: var(--slate-300); color: var(--primary-xdark); }
+    .accordion.open .acc-head { background: var(--slate-300); }
+    .acc-body { display: none; padding: 12px 13px; background: white;
+                border-top: 1px solid var(--slate-200); }
     .accordion.open .acc-body { display: block; }
     .acc-body p { font-size: 0.8rem; line-height: 1.7; color: var(--slate-600); }
     .acc-body p + p { margin-top: 9px; }
@@ -238,7 +263,7 @@
     footer a { color: var(--slate-400); }
 
     /* ── Leaflet override ── */
-    .leaflet-container { font-family: 'Inter', sans-serif; }
+    .leaflet-container { font-family: 'Inter', sans-serif; background: #d4dadc; }
   </style>
 </head>
 <body>
@@ -247,6 +272,30 @@
     <h1>Community Solar State Reports</h1>
     <span class="subtitle">Click any state to view its COS policy report.</span>
   </header>
+
+  <div class="map-legend">
+    <div class="legend-title">Program<br>Status</div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#0f766e"></div>
+      <div><div class="legend-label">Active Program</div>
+        <div class="legend-desc">Community solar is enabled in law or regulation &mdash; subscribers share a project and receive bill credits.</div></div>
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#14b8a6"></div>
+      <div><div class="legend-label">Limited / Emerging</div>
+        <div class="legend-desc">No full statewide program, but partial building blocks: virtual net metering, a capped pilot, or utility / co-op shared solar.</div></div>
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#99f6e4"></div>
+      <div><div class="legend-label">No Program</div>
+        <div class="legend-desc">No community solar policy and no virtual net metering; nothing enabling shared ownership is on the books.</div></div>
+    </div>
+    <div class="legend-item">
+      <div class="legend-swatch" style="background:#94a3b8"></div>
+      <div><div class="legend-label">No Data</div>
+        <div class="legend-desc">Not covered by the report &mdash; status has not been assessed.</div></div>
+    </div>
+  </div>
 
   <div class="main-content" id="main-content">
     <div id="map"></div>
@@ -258,7 +307,7 @@
   </div>
 
   <footer>
-    Community solar policy data from <em>Report Draft</em> &mdash; MIT Energy Initiative &nbsp;|&nbsp;
+    Community solar policy data from the <strong>Renewable Energy Clinic</strong> &nbsp;|&nbsp;
     Map boundaries: <a href="https://github.com/notAidven/community-solar-map" target="_blank">notAidven/community-solar-map</a>
   </footer>
 </div>
@@ -357,7 +406,7 @@ if (typeof L === 'undefined') {
 }
 
 const map = L.map('map', { zoomSnap: 0.5 });
-L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png?key=cb1_2j66_1_bdc1c1c1638e90dfd3765aa1', {
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
   subdomains: 'abcd', maxZoom: 19
 }).addTo(map);
@@ -461,24 +510,41 @@ function showWelcome() {
   const na = vals.filter(r => r.status === 'active').length;
   const nl = vals.filter(r => r.status === 'limited').length;
   const nn = vals.filter(r => r.status === 'none').length;
+  function statusCard(cls, title, count, desc) {
+    return '<div class="status-card ' + cls + '">'
+      + '<div class="status-card-head"><span>' + title + '</span>'
+      + '<span class="status-card-count">' + count + ' states</span></div>'
+      + '<div class="status-card-desc">' + desc + '</div></div>';
+  }
+
   document.getElementById('panel-content').innerHTML =
     '<div class="welcome-wrap">'
     + '<div class="welcome-icon">&#127759;</div>'
     + '<div class="welcome-title">Community Solar State Reports</div>'
     + '<p class="welcome-body">This map shows the state of community-owned solar (COS) policy across all 50 states, '
-    + 'Washington DC, and the US territories. Click any state to read its detailed policy report.</p>'
-    + '<div class="count-pills">'
-    + '<span class="count-pill active">' + na + ' Active Programs</span>'
-    + '<span class="count-pill limited">' + nl + ' Limited / Emerging</span>'
-    + '<span class="count-pill none">' + nn + ' No Program</span>'
+    + 'Washington DC, and the US territories. Each state is shaded by how far its policy framework has developed. '
+    + 'Click any state to read its detailed policy report.</p>'
+    + '<div class="fact-title" style="margin-top:18px">What the three statuses mean</div>'
+    + '<div class="status-guide">'
+    + statusCard('active', 'Active Program', na,
+        'The state has <strong>enabled community solar in law or regulation</strong>. A statute or '
+      + 'regulator-approved program lets multiple customers subscribe to a shared solar project and receive '
+      + 'credits on their utility bills, so participation does not require owning a suitable roof.')
+    + statusCard('limited', 'Limited / Emerging', nl,
+        'No full statewide community solar program, but <strong>some of the building blocks are in place</strong>. '
+      + 'These states typically allow virtual or remote net metering, run a capped or time-limited pilot, or rely on '
+      + 'voluntary utility and rural-cooperative shared solar offerings. Participation is possible but constrained '
+      + 'by size caps, eligibility rules, or the absence of a permanent framework.')
+    + statusCard('none', 'No Program', nn,
+        'The state has <strong>no community solar policy and no virtual net metering</strong>. Without a mechanism '
+      + 'to move credits from a shared project to a subscriber\'s bill, there is no enabling pathway for shared or '
+      + 'community-owned solar, though legislation may be pending.')
     + '</div>'
-    + '<div class="legend">'
-    + '<div class="legend-title">Program Status</div>'
-    + '<div class="legend-row"><div class="legend-swatch" style="background:#0f766e"></div>Active Program</div>'
-    + '<div class="legend-row"><div class="legend-swatch" style="background:#14b8a6"></div>Limited / Emerging</div>'
-    + '<div class="legend-row"><div class="legend-swatch" style="background:#99f6e4"></div>No Program</div>'
-    + '<div class="legend-row"><div class="legend-swatch" style="background:#94a3b8"></div>No Data</div>'
-    + '</div></div>';
+    + '<p class="welcome-body" style="margin-top:14px;font-size:0.73rem;color:var(--slate-500)">'
+    + 'Status is assigned from each state\'s Community Solar and Virtual / Remote Net Metering findings, plus any '
+    + 'documented program size, eligibility, and benefit-distribution rules. Open a state and expand '
+    + '&ldquo;Policies at a glance&rdquo; to see the evidence behind its shading.</p>'
+    + '</div>';
   document.getElementById('info-panel').scrollTop = 0;
 }
 
