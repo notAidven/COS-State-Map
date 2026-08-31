@@ -410,6 +410,13 @@ html = r"""<!DOCTYPE html>
 
     /* ── Leaflet override ── */
     .leaflet-container { font-family: 'Inter', sans-serif; background: #d4dadc; }
+    /* Clicking an SVG path focuses it, and the browser draws its default focus
+       ring around the path's bounding box - a blue rectangle over the map.
+       Leaflet gives these paths no tabindex, so they are not keyboard-
+       reachable and nothing is lost by dropping it; the selected state is
+       already marked by its own dark outline. */
+    .leaflet-container path.leaflet-interactive:focus,
+    .leaflet-container path.leaflet-interactive:focus-visible { outline: none; }
 
     @media (max-width: 900px) {
       .main-content, .main-content.panel-collapsed { grid-template-columns: 1fr !important; }
