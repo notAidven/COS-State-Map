@@ -45,9 +45,10 @@
     .container { max-width: 1400px; margin: 0 auto; padding: 20px 24px; }
 
     /* ── Header ── */
-    header { margin-bottom: 14px; display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+    header { margin-bottom: 14px; }
     header h1 { font-size: 1.4rem; font-weight: 700; color: var(--primary-dark); }
-    header .subtitle { color: var(--slate-500); font-size: 0.85rem; }
+    header .subtitle { display: block; margin-top: 4px; max-width: 78ch;
+                       color: var(--slate-500); font-size: 0.85rem; line-height: 1.5; }
 
     /* ── View tabs (Map / List / About) ── */
     .view-tabs { display: flex; gap: 4px; margin-bottom: 14px;
@@ -415,6 +416,9 @@
 <div class="container">
   <header>
     <h1>A Review of State Community Solar and Community-owned Solar Policies</h1>
+    <span class="subtitle">The objective of this report is to create a comprehensive
+    state-by-state documentation of policies related to community solar (CS) and
+    community-owned solar (COS).</span>
   </header>
 
   <div class="view-tabs">
