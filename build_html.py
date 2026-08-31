@@ -53,10 +53,26 @@ html = r"""<!DOCTYPE html>
     .container { max-width: 1400px; margin: 0 auto; padding: 20px 24px; }
 
     /* ── Header ── */
-    header { margin-bottom: 14px; }
-    header h1 { font-size: 1.4rem; font-weight: 700; color: var(--primary-dark); }
-    header .subtitle { display: block; margin-top: 4px; max-width: 78ch;
-                       color: var(--slate-500); font-size: 0.85rem; line-height: 1.5; }
+    /* Title box, matching the projects map at
+       notaidven.github.io/community-solar-map */
+    header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: #fff; border-radius: 16px; padding: 28px 20px;
+      margin: 0 0 24px; text-align: center;
+    }
+    header h1 {
+      font-size: 2.2rem; font-weight: 700; line-height: 1.2;
+      letter-spacing: -0.02em; color: #fff; margin-bottom: 8px;
+    }
+    header .subtitle {
+      display: block; max-width: 82ch; margin: 0 auto;
+      color: rgba(255, 255, 255, .85); font-size: 1.05rem; line-height: 1.45;
+    }
+    @media (max-width: 700px) {
+      header { padding: 22px 16px; }
+      header h1 { font-size: 1.55rem; }
+      header .subtitle { font-size: 0.92rem; }
+    }
 
     /* ── View tabs (Map / List / About) ── */
     .view-tabs { display: flex; gap: 4px; margin-bottom: 14px;
