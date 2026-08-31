@@ -403,10 +403,15 @@ html = r"""<!DOCTYPE html>
     /* ── Footer ── */
     footer {
       font-size: 0.72rem; color: var(--slate-400);
-      text-align: center; padding: 14px 0;
+      text-align: left; padding: 16px 0 20px;
       border-top: 1px solid var(--slate-200);
     }
     footer a { color: var(--slate-400); }
+    /* The report's preface, as a footnote on how the state pages were built. */
+    .footer-note {
+      max-width: 105ch; margin: 0 0 10px;
+      font-size: 0.72rem; line-height: 1.65; color: var(--slate-500);
+    }
 
     /* ── Leaflet override ── */
     .leaflet-container { font-family: 'Inter', sans-serif; background: #d4dadc; }
@@ -504,6 +509,12 @@ html = r"""<!DOCTYPE html>
   </section>
 
   <footer>
+    <p class="footer-note">The information in this report was compiled through a comprehensive
+    search of government and nonprofit websites, including both explanations of new programs for
+    the general public and legislative documents. The template is standardized for each state,
+    making it easy to find information and to compare policies and funding directly across states.
+    At the end of each page, there is a reference section. This includes links to all sources of
+    the information included, which can be followed for more detailed information.</p>
     <strong>Renewable Energy Clinic</strong> &nbsp;|&nbsp; Updated as of June 14, 2026 &nbsp;|&nbsp;
     Map boundaries: <a href="https://github.com/notAidven/community-solar-map" target="_blank">notAidven/community-solar-map</a>
   </footer>
