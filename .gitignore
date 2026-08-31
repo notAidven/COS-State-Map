@@ -1,5 +1,3 @@
 *.pdf
 __pycache__/
 *.pyc
-states_data_output.js
-state_reports_output.js
