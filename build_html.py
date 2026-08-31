@@ -160,6 +160,8 @@ html = r"""<!DOCTYPE html>
     .welcome-wrap { padding: 22px; }
     .welcome-title { font-size: 1.05rem; font-weight: 700; color: var(--primary-dark); margin-bottom: 8px; }
     .welcome-body  { font-size: 0.82rem; line-height: 1.65; color: var(--slate-600); }
+    .cat-count { display: flex; align-items: center; gap: 8px; margin-bottom: 10px;
+                 font-size: 0.78rem; font-weight: 600; color: var(--slate-700); }
     .welcome-body + .welcome-body { margin-top: 8px; }
 
     /* ── Legend: compact control docked inside the map, so it stays
@@ -251,6 +253,7 @@ html = r"""<!DOCTYPE html>
       border-radius: 10px; padding: 12px 14px; background: var(--primary-bg);
     }
     .landscape-box .fact-title { color: var(--primary); }
+    .detail-row { grid-template-columns: 116px 1fr; }
     .landscape-box p { font-size: 0.81rem; line-height: 1.65; color: var(--slate-700); }
     .landscape-box p + p { margin-top: 7px; }
 
@@ -348,7 +351,7 @@ html = r"""<!DOCTYPE html>
     .search-input {
       font-family: inherit; font-size: 0.82rem; color: var(--slate-800);
       border: 1px solid var(--slate-300); border-radius: 8px;
-      padding: 8px 12px; min-width: 230px; background: white;
+      padding: 8px 12px; min-width: 290px; background: white;
     }
     .search-input:focus { outline: 2px solid var(--primary-light); outline-offset: -1px; }
     .filter-select {
@@ -367,60 +370,34 @@ html = r"""<!DOCTYPE html>
       background: white; border: 1px solid var(--slate-200); border-radius: 12px;
       box-shadow: var(--shadow); overflow-x: auto; margin-bottom: 14px;
     }
-    table.db { border-collapse: collapse; width: 100%; min-width: 940px; }
+    table.db { border-collapse: collapse; width: 100%; min-width: 620px; }
     table.db thead th {
       position: sticky; top: 0; z-index: 2;
-      background: var(--slate-100); text-align: left;
-      font-size: 0.64rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em;
-      color: var(--slate-500); padding: 11px 12px; border-bottom: 1px solid var(--slate-200);
+      background: white; text-align: left;
+      font-size: 0.63rem; font-weight: 600; text-transform: uppercase; letter-spacing: .07em;
+      color: var(--slate-400); padding: 12px 14px 10px;
+      border-bottom: 1px solid var(--slate-200);
       white-space: nowrap; cursor: pointer; user-select: none;
     }
-    table.db thead th:hover { color: var(--primary-dark); }
-    table.db thead th.nosort { cursor: default; }
-    table.db thead th .sort-arrow { color: var(--slate-400); font-size: 0.6rem; margin-left: 3px; }
-    table.db tbody tr { border-bottom: 1px solid var(--slate-100); cursor: pointer; }
-    table.db tbody tr:last-child { border-bottom: none; }
-    table.db tbody tr:hover { background: var(--primary-bg); }
-    table.db td { padding: 10px 12px; font-size: 0.8rem; color: var(--slate-700);
-                  vertical-align: top; }
+    table.db thead th.num { text-align: center; }
+    table.db thead th:hover { color: var(--primary); }
+    table.db thead th .sort-arrow { color: var(--primary); font-size: 0.55rem; margin-left: 4px; }
+    table.db tbody tr { cursor: pointer; }
+    table.db tbody tr + tr td { border-top: 1px solid var(--slate-100); }
+    table.db tbody tr:hover td { background: var(--primary-bg); }
+    table.db td { padding: 11px 14px; font-size: 0.81rem; color: var(--slate-700);
+                  vertical-align: middle; }
+    table.db td.num { text-align: center; }
     td.db-name { font-weight: 600; color: var(--slate-900); white-space: nowrap; }
-    td.db-type { font-size: 0.72rem; color: var(--slate-500); white-space: nowrap; }
-    td.db-summary { color: var(--slate-600); line-height: 1.5; min-width: 320px; }
+    .mk-yes { font-weight: 600; color: var(--yes-fg); }
+    .mk-no  { color: var(--slate-400); }
     .db-status {
-      display: inline-flex; align-items: center; gap: 6px;
-      font-size: 0.73rem; font-weight: 600; color: var(--slate-700); white-space: nowrap;
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 0.78rem; color: var(--slate-600); white-space: nowrap;
     }
-    .db-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0;
-              border: 1px solid rgba(0,0,0,.18); }
+    .db-dot { width: 9px; height: 9px; border-radius: 99px; flex-shrink: 0; }
     .db-empty { padding: 26px; text-align: center; color: var(--slate-500); font-size: 0.85rem; }
 
-    /* ══════════════════════════════════════
-       ABOUT VIEW
-       ══════════════════════════════════════ */
-    .about {
-      background: white; border: 1px solid var(--slate-200); border-radius: 14px;
-      box-shadow: var(--shadow); padding: 26px 30px; max-width: 860px; margin-bottom: 16px;
-    }
-    .about h2 { font-size: 1.05rem; color: var(--primary-dark); margin-bottom: 10px; }
-    .about h3 { font-size: 0.9rem; color: var(--slate-800); margin: 20px 0 7px; }
-    .about p { font-size: 0.85rem; line-height: 1.72; color: var(--slate-600); }
-    .about p + p { margin-top: 10px; }
-    .about ul { list-style: disc; padding-left: 22px; margin: 9px 0; }
-    .about li { font-size: 0.85rem; line-height: 1.65; color: var(--slate-600); margin-bottom: 5px; }
-    .about .about-sec + .about-sec { margin-top: 22px; padding-top: 22px;
-                                     border-top: 1px solid var(--slate-200); }
-    .about .stamp { font-size: 0.75rem; color: var(--slate-400); margin-top: 14px; }
-
-    /* Method / preface note under the map */
-    .method-note {
-      background: white; border: 1px solid var(--slate-200); border-left: 4px solid var(--primary-light);
-      border-radius: 10px; padding: 13px 16px; margin-bottom: 16px;
-    }
-    .method-note .method-title {
-      font-size: 0.64rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em;
-      color: var(--slate-400); margin-bottom: 6px;
-    }
-    .method-note p { font-size: 0.79rem; line-height: 1.68; color: var(--slate-600); }
 
     /* ── Footer ── */
     footer {
@@ -445,14 +422,12 @@ html = r"""<!DOCTYPE html>
 <body>
 <div class="container">
   <header>
-    <h1>Community Solar and Community-Owned Solar State Reports</h1>
-    <span class="subtitle">A review of state community solar (CS) and community-owned solar (COS) policies.</span>
+    <h1>A Review of State Community Solar and Community-owned Solar Policies</h1>
   </header>
 
   <div class="view-tabs">
-    <button class="view-tab active" data-view="map"   onclick="setView('map')">Map</button>
-    <button class="view-tab"        data-view="list"  onclick="setView('list')">List &amp; database</button>
-    <button class="view-tab"        data-view="about" onclick="setView('about')">About this report</button>
+    <button class="view-tab active" data-view="map"  onclick="setView('map')">Map</button>
+    <button class="view-tab"        data-view="list" onclick="setView('list')">List</button>
   </div>
 
   <!-- ═══════════ MAP VIEW ═══════════ -->
@@ -460,10 +435,10 @@ html = r"""<!DOCTYPE html>
     <div class="layer-bar">
       <span class="layer-bar-label">Show on map</span>
       <div class="segmented" id="layer-seg">
-        <button class="seg-btn active" data-layer="overall" onclick="setLayer('overall')">Overall CS &amp; COS status</button>
-        <button class="seg-btn" data-layer="vnm"   onclick="setLayer('vnm')">Virtual / remote net metering</button>
-        <button class="seg-btn" data-layer="cs"    onclick="setLayer('cs')">Community solar policies</button>
-        <button class="seg-btn" data-layer="other" onclick="setLayer('other')">State support for community ownership</button>
+        <button class="seg-btn active" data-layer="overall" onclick="setLayer('overall')">Overall status</button>
+        <button class="seg-btn" data-layer="vnm"   onclick="setLayer('vnm')">Virtual or Remote Net Metering</button>
+        <button class="seg-btn" data-layer="cs"    onclick="setLayer('cs')">Community Solar</button>
+        <button class="seg-btn" data-layer="other" onclick="setLayer('other')">Other State Support for Community-Owned Solar</button>
       </div>
     </div>
 
@@ -477,17 +452,7 @@ html = r"""<!DOCTYPE html>
     </div>
 
     <div class="jump-bar" id="jump-bar">
-      <span class="jump-label">Hard to click on the map</span>
-    </div>
-
-    <div class="method-note">
-      <div class="method-title">How this report was compiled</div>
-      <p>The information in this report was compiled through a comprehensive search of government and
-      nonprofit websites, including both explanations of new programs for the general public and
-      legislative documents. The template is standardized for each state, making it easy to find
-      information and to compare policies and funding directly across states. At the end of each page,
-      there is a reference section. This includes links to all sources of the information included,
-      which can be followed for more detailed information.</p>
+      <span class="jump-label">Jump to</span>
     </div>
   </section>
 
@@ -495,12 +460,12 @@ html = r"""<!DOCTYPE html>
   <section id="view-list" class="view">
     <div class="list-toolbar">
       <input type="search" id="list-search" class="search-input"
-             placeholder="Search jurisdiction or policy text&hellip;" oninput="renderList()">
+             placeholder="Search jurisdictions and policy text&hellip;" oninput="renderList()">
       <select id="filter-status" class="filter-select" onchange="renderList()">
         <option value="">All statuses</option>
-        <option value="both">Community solar + community ownership support</option>
-        <option value="cs">Community solar, no community ownership support</option>
-        <option value="none">No enabling policy</option>
+        <option value="both">CS + community ownership</option>
+        <option value="cs">Community solar only &mdash; limited</option>
+        <option value="none">No enabling policies</option>
       </select>
       <select id="filter-type" class="filter-select" onchange="renderList()">
         <option value="">States, DC &amp; territories</option>
@@ -516,195 +481,19 @@ html = r"""<!DOCTYPE html>
         <thead>
           <tr>
             <th onclick="sortList('name')">Jurisdiction<span class="sort-arrow" id="sa-name"></span></th>
-            <th onclick="sortList('type')">Type<span class="sort-arrow" id="sa-type"></span></th>
             <th onclick="sortList('status')">Overall status<span class="sort-arrow" id="sa-status"></span></th>
-            <th onclick="sortList('vnm')">Virtual / remote<br>net metering<span class="sort-arrow" id="sa-vnm"></span></th>
-            <th onclick="sortList('cs')">Community<br>solar<span class="sort-arrow" id="sa-cs"></span></th>
-            <th onclick="sortList('other')">State support for<br>community ownership<span class="sort-arrow" id="sa-other"></span></th>
-            <th class="nosort">Community-owned solar landscape</th>
+            <th class="num" onclick="sortList('vnm')">Virtual or Remote<br>Net Metering<span class="sort-arrow" id="sa-vnm"></span></th>
+            <th class="num" onclick="sortList('cs')">Community<br>Solar<span class="sort-arrow" id="sa-cs"></span></th>
+            <th class="num" onclick="sortList('other')">Other State Support for<br>Community-Owned Solar<span class="sort-arrow" id="sa-other"></span></th>
           </tr>
         </thead>
         <tbody id="list-body"></tbody>
       </table>
     </div>
-    <div class="method-note">
-      <div class="method-title">How this report was compiled</div>
-      <p>The information in this report was compiled through a comprehensive search of government and
-      nonprofit websites, including both explanations of new programs for the general public and
-      legislative documents. The template is standardized for each state, making it easy to find
-      information and to compare policies and funding directly across states. At the end of each page,
-      there is a reference section. This includes links to all sources of the information included,
-      which can be followed for more detailed information.</p>
-    </div>
-  </section>
-
-  <!-- ═══════════ ABOUT VIEW ═══════════ -->
-  <section id="view-about" class="view">
-    <div class="about">
-      <div class="about-sec">
-        <h2>Introduction</h2>
-        <p>Community solar (CS) allows those who are unable to install solar panels on their properties
-        to access solar energy through CS farms. After a large-scale solar array is developed in a
-        certain utility service area, the panels are interconnected to the grid and can feed solar
-        energy to homes. Any homes located in the same utility service area can access the solar energy
-        produced through a purchased subscription to the farm. By using this system, homes can be
-        powered by low-cost, clean energy, resulting in annual savings of 5&ndash;20% on electricity bills.</p>
-        <p>Community-owned solar (COS) projects are typically collectively owned by local stakeholders,
-        shareholders, or users, often enabled by voluntary membership, voting rights, economic
-        participation, and autonomy. Members usually have voting power, and the benefits are received
-        directly by them.</p>
-        <p>The objective of this report is to create a comprehensive state-by-state documentation of
-        policies related to CS and COS, including:</p>
-        <ul>
-          <li>Policies that incentivize or inhibit CS and COS</li>
-          <li>Details about the size, eligibility, and benefit distribution of these programs</li>
-          <li>Illustrative projects and active solar cooperatives</li>
-          <li>A list of reference documents and sites that users can review for further information</li>
-        </ul>
-        <p>This report is intended to help stakeholders in each state more easily understand the
-        opportunities and funding available to participate in community solar. To help interpret the
-        information presented on each state&rsquo;s page, below are explanations of a few key programs
-        and organizations that are frequently referenced.</p>
-      </div>
-
-      <div class="about-sec">
-        <h2>Key programs and organizations</h2>
-
-        <h3>Solar For All</h3>
-        <p>In 2022, Congress created the $7 billion Solar for All program as part of the Inflation
-        Reduction Act, directing the EPA to make competitive grants to states and other entities to
-        deploy solar projects in low-income and disadvantaged areas. Community solar is a key way to
-        reach renters, people in multifamily housing, and households who cannot install rooftop solar
-        panels due to cost or roof conditions. The Solar for All program is specifically targeted toward
-        these populations, and its grants are allocated to reduce both the upfront cost of community
-        solar installations and subscription costs. Beyond providing low-cost financing, Solar for All
-        also assists communities in overcoming barriers such as siting, permitting, and interconnection.</p>
-        <p>The EPA selected recipients and awarded all of the program funds by August 2024. The Solar
-        for All grants include 49 state-level awards totaling approximately $5.5 billion, six awards for
-        Tribes totaling over $500 million, and five multistate awards totaling approximately $1 billion.
-        These multi-state awards take the form of coalitions led by nonprofit organizations that operate
-        across state lines to fund specific types of community solar projects.</p>
-
-        <h3>Community Power Coalition (led by Inclusive Prosperity Capital)</h3>
-        <p>The Community Power Coalition is a national partnership of organizations assembled to expand
-        community solar for low-income and disadvantaged communities. SFA awarded it $249.3 million. It
-        is led and fiscally hosted by Inclusive Prosperity Capital, a nonprofit clean energy financier,
-        and comprises groups including Black Owners of Solar Services, Clean Energy Group, Coalition for
-        Community Solar Access, and six others, all sharing a commitment to community solar as a way to
-        lower energy costs for families, create quality jobs, and empower communities to develop solar
-        solutions that fit their needs. CPC members have expertise in solar financing, workforce
-        development, minority entrepreneurship, affordable housing, and policy, and have served as
-        developers, financing partners, trainers, and technical assistance providers for community solar
-        deployment.</p>
-
-        <h3>Southeast Rural Power (led by Groundswell)</h3>
-        <p>The Southeast Rural Power coalition includes nonprofit rural cooperatives and municipal
-        utilities across Alabama, Arkansas, Florida, Georgia, Mississippi, North Carolina, South
-        Carolina, and Virginia. Its goal is to deploy more than 100 MW of solar and 20 MWh of associated
-        storage to reduce electricity bills by 50% for 17,000 rural households, delivering more than
-        $400 million in household savings over 20 years. Led by Groundswell, a nonprofit focused on
-        building community power in the Heartland, Mid-Atlantic, and Southeast, the coalition received a
-        $156 million Solar for All contract, which was used for both direct solar deployment and the
-        establishment of workforce development and entrepreneurship centers, ensuring that the
-        investment supports local businesses and creates pathways to stable, good-paying jobs.</p>
-
-        <h3>Clean Energy Fund of Texas</h3>
-        <p>As Texas&rsquo;s first &ldquo;green bank,&rdquo; the Clean Energy Fund of Texas provides
-        affordable financing for renewable energy and efficiency projects, working with homeowners,
-        businesses, contractors, and nonprofits to remove financial barriers to energy upgrades. The
-        Fund received a $156 million Solar for All grant to support an initiative that provides community
-        solar and energy resiliency infrastructure to low-income communities across multiple southern
-        and southeastern states.</p>
-
-        <h3>Industrial Heartland Solar Coalition (led by Growth Opportunity Partners)</h3>
-        <p>The Industrial Heartland Solar Coalition is a multi-state collaborative that aims to expand
-        solar access for more than 31 low- and moderate-income communities across 8 Midwestern and Rust
-        Belt states. The coalition received a $156 million Solar for All grant to support the
-        installation of more than 110 megawatts of solar capacity, deliver approximately $19 million in
-        annual savings for households, and create 1000 new solar jobs with an emphasis on local hiring.
-        The coalition is led by Growth Opportunity Partners, an organization that offers community
-        development capital, services, and solutions to growing companies, small businesses, and
-        municipalities.</p>
-
-        <h3>Solar Access for Nationwide Affordable Housing (led by GRID Alternatives)</h3>
-        <p>The Solar Access for Nationwide Affordable Housing (SANAH) coalition aims to expand equitable
-        access to solar, storage, and upgrades to drive savings, create jobs and entrepreneurship
-        opportunities, strengthen resilience, and promote ownership across communities served by
-        affordable housing. Awarded a $250 million Solar For All grant, the coalition is led by GRID
-        Alternatives, a nonprofit focused on making solar technology practical and accessible for
-        low-income communities while providing pathways to clean energy jobs.</p>
-      </div>
-
-      <div class="about-sec">
-        <h2>A note on federal policy changes</h2>
-        <p>In July 2025, Congress passed the President&rsquo;s &ldquo;One Big Beautiful Bill Act,&rdquo;
-        which repealed the Solar for All program and rescinded a small amount of the remaining
-        unobligated administrative funds. Congress stated that the legislation did not modify the $7
-        billion that had been obligated to states and other grantees nearly a year earlier. On August 7,
-        2025, the administrator of the EPA announced that the agency no longer had a &ldquo;statutory
-        basis or dedicated funding&rdquo; for the program, thereby terminating the grants already
-        awarded without a legislative basis. Within one week of the Program Termination Directive,
-        approximately 90% of the funds that were obligated to Plaintiffs before August 16, 2024, were
-        liquidated and removed from grantees&rsquo; ASAP accounts, even though rescission was limited to
-        funds that were unobligated as of July 3, 2025.</p>
-        <p>In October 2025, twenty states filed a lawsuit against the EPA to reinstate the SFA program.
-        As of March 4, 2026, the SFA funds granted to states have not yet been disbursed or used for
-        solar energy deployment. Because of this, funding from the SFA program is not currently
-        available despite its documentation in the state pages of this report, which were originally
-        compiled between late 2024 and early 2025.</p>
-        <p>However, state-level policy remains largely unchanged, ensuring that much of the information
-        in this report still applies. While fewer funding sources for community solar exist after the
-        pause of SFA, state policy incentives remain in effect to promote solar deployment, and the
-        organizations that received grants are still active in other initiatives. The reference section
-        on each page includes links to state websites, which provide the most up-to-date information.</p>
-        <p class="stamp">Updated as of June 14, 2026.</p>
-      </div>
-
-      <div class="about-sec">
-        <h2>Key findings</h2>
-        <p>Using data from state governments and nonprofit sources, we compiled and compared information
-        on policies and financial support that enable or otherwise affect community solar projects across
-        the United States. For each state, a page is presented that includes a table with three
-        &ldquo;yes or no&rdquo; categories &mdash; Virtual or Remote Net Metering, Community Solar
-        Policies, and Other State Support for Community-Owned Solar &mdash; along with further
-        explanation of specific policies.</p>
-        <p>Among the 50 US states, <strong>thirteen</strong> have policies in place to enable virtual or
-        remote net metering. Virtual net metering is a bill-crediting system for community solar. When
-        community solar projects generate power that&rsquo;s not used on site, it&rsquo;s fed back into
-        the grid, generating net metering credits that are shared among subscribers based on their share
-        of the array. These credits reduce subscribers&rsquo; electricity bills.</p>
-        <p><strong>Twenty-four</strong> states have policies that enable or inhibit community solar.
-        Enabling policies may include state laws that require utilities to allow the creation of
-        community solar programs (Alaska) or more direct incentives, such as offering low-income
-        households a 20% discount to participate in a community solar project (California). Inhibiting
-        policies may include exceptions to state recommendations, such as allowing utilities to decline
-        to participate in a community solar program (Arizona).</p>
-        <p>Finally, <strong>thirteen</strong> states had state or municipal-level financial support to
-        enable community-owned solar. These include policies such as California&rsquo;s Green Tariff
-        Shared Renewables (GTSR) initiative, which allows customers to purchase a share of a local
-        renewable energy project. On each state&rsquo;s page, this category is marked &ldquo;yes&rdquo;
-        only if there is funding or an incentive structure directed by that state&rsquo;s government.
-        The information box also indicates whether the state received funding from the federal Solar for
-        All program or from one of its multi-state coalitions (Community Power Coalition, Southeast
-        Rural Power, Clean Energy Fund of Texas).</p>
-        <p>The counts above cover the 50 states, as in the printed report. The map and list on this site
-        also include the District of Columbia and the five US territories.</p>
-      </div>
-
-      <div class="about-sec">
-        <h2>How this report was compiled</h2>
-        <p>The information in this report was compiled through a comprehensive search of government and
-        nonprofit websites, including both explanations of new programs for the general public and
-        legislative documents. The template is standardized for each state, making it easy to find
-        information and to compare policies and funding directly across states. At the end of each page,
-        there is a reference section. This includes links to all sources of the information included,
-        which can be followed for more detailed information.</p>
-      </div>
-    </div>
   </section>
 
   <footer>
-    Community solar and community-owned solar policy data from the <strong>Renewable Energy Clinic</strong> &nbsp;|&nbsp;
+    <strong>Renewable Energy Clinic</strong> &nbsp;|&nbsp; Updated as of June 14, 2026 &nbsp;|&nbsp;
     Map boundaries: <a href="https://github.com/notAidven/community-solar-map" target="_blank">notAidven/community-solar-map</a>
   </footer>
 </div>
@@ -779,62 +568,51 @@ function overallStatus(name) {
   return 'none';
 }
 
-/* Wording taken from the report's own category definitions, not invented. */
+/* Labels are the report's own category names; each status is stated as the
+   yes/no rule that produces it, so nothing here is editorial. */
 const STATUS_META = {
   both: {
     color: '#14713d',
-    label: 'Community solar + community ownership support',
     short: 'CS + community ownership',
-    rule:  'Community Solar = Yes and Other State Support for Community-Owned Solar = Yes',
-    desc:  'The state both has community solar policy and directs funding or an incentive '
-         + 'structure toward community-owned solar. Per the report, the community-ownership '
-         + 'category is marked "yes" only where there is funding or an incentive structure '
-         + 'directed by that state’s government.'
+    rule:  'Community Solar: Yes  \u00b7  Other State Support for Community-Owned Solar: Yes'
   },
   cs: {
     color: '#e2711d',
-    label: 'Community solar, no community ownership support',
-    short: 'Community solar only — limited',
-    rule:  'Community Solar (or virtual/remote net metering) = Yes, but Other State Support '
-         + 'for Community-Owned Solar = No',
-    desc:  'Community solar and community-owned solar are not the same. Residents can subscribe '
-         + 'to a shared array, or the bill-crediting mechanism for one exists, but no state '
-         + 'funding or incentive structure supports collective ownership — so the state '
-         + 'counts as limited for community-owned solar.'
+    short: 'Community solar only \u2014 limited',
+    rule:  'Community Solar or Virtual or Remote Net Metering: Yes  \u00b7  '
+         + 'Other State Support for Community-Owned Solar: No'
   },
   none: {
     color: '#c3ccd4',
-    label: 'No enabling policy',
-    short: 'No enabling policy / no data',
-    rule:  'No to all three categories',
-    desc:  'No virtual or remote net metering, no community solar policy, and no state or '
-         + 'municipal financial support for community-owned solar. Jurisdictions with no '
-         + 'documented policy are shown in this group.'
+    short: 'No enabling policies',
+    rule:  'No to all three categories'
   }
 };
 
-/* Single-category layers: the three "yes or no" columns from the report,
-   in the colours used for Figs. 1–3. */
+/* Single-category layers: the three "yes or no" columns from the report, in
+   the colours used for Figs. 1-3. Each `note` is quoted from Key Findings. */
 const CATEGORY_META = {
   vnm: {
     key: 'vnm', color: '#2e7d32', title: 'Virtual or Remote Net Metering',
-    yes: 'Has virtual / remote net metering', no: 'No virtual / remote net metering',
-    note: 'A bill-crediting system for community solar: power fed back into the grid generates '
-        + 'credits shared among subscribers based on their share of the array. Thirteen of the '
-        + '50 states have enabling policies.'
+    note: 'Virtual net metering is a bill-crediting system for community solar. When '
+        + 'community solar projects generate power that\u2019s not used on site, it\u2019s fed '
+        + 'back into the grid, generating net metering credits that are shared among '
+        + 'subscribers based on their share of the array. These credits reduce '
+        + 'subscribers\u2019 electricity bills.'
   },
   cs: {
-    key: 'cs', color: '#1f5fa8', title: 'Community Solar Policies',
-    yes: 'Has community solar policy', no: 'No community solar policy',
-    note: 'Policies that enable or inhibit community solar — from laws requiring utilities to '
-        + 'allow community solar programs to incentives such as discounted subscriptions. '
-        + 'Twenty-four of the 50 states have such policies.'
+    key: 'cs', color: '#1f5fa8', title: 'Community Solar',
+    note: 'Enabling policies may include state laws that require utilities to allow the '
+        + 'creation of community solar programs (Alaska) or more direct incentives, such as '
+        + 'offering low-income households a 20% discount to participate in a community '
+        + 'solar project (California). Inhibiting policies may include exceptions to state '
+        + 'recommendations, such as allowing utilities to decline to participate in a '
+        + 'community solar program (Arizona).'
   },
   other: {
     key: 'other', color: '#dfa008', title: 'Other State Support for Community-Owned Solar',
-    yes: 'Has state support for community ownership', no: 'No state support for community ownership',
-    note: 'Marked "yes" only where there is funding or an incentive structure for community '
-        + 'OWNERSHIP directed by that state’s government. Thirteen of the 50 states qualify.'
+    note: 'On each state\u2019s page, this category is marked \u201cyes\u201d only if there is '
+        + 'funding or an incentive structure directed by that state\u2019s government.'
   }
 };
 const OFF_COLOR = '#c3ccd4';
@@ -923,8 +701,8 @@ function renderLegend() {
     const m = CATEGORY_META[currentLayerKey];
     const yes = categoryCount(currentLayerKey);
     el.innerHTML = '<div class="legend-title">' + esc(m.title) + '</div>'
-      + legendRow(m.color,   m.yes, yes)
-      + legendRow(OFF_COLOR, m.no,  ALL_NAMES.length - yes);
+      + legendRow(m.color,   'Yes', yes)
+      + legendRow(OFF_COLOR, 'No',  ALL_NAMES.length - yes);
   }
 }
 
@@ -940,6 +718,7 @@ function setLayer(key) {
   }
   renderLegend();
   renderJumpBar();
+  if (!activeLayer) showWelcome();   // keep the panel's text in step with the map
 }
 
 function onEachFeature(feature, layer) {
@@ -986,7 +765,7 @@ function selectState(name, zoom) {
    Northern Marianas and the USVI become reachable) ── */
 function renderJumpBar() {
   const bar = document.getElementById('jump-bar');
-  bar.innerHTML = '<span class="jump-label">Hard to click on the map</span>'
+  bar.innerHTML = '<span class="jump-label">Jump to</span>'
     + OFF_MAP.map(function(n) {
         return '<button class="jump-chip" onclick="selectState(' + JSON.stringify(n).replace(/"/g, '&quot;') + ', true)">'
           + '<span class="jump-dot" style="background:' + fillFor(n) + '"></span>'
@@ -1074,34 +853,26 @@ function showWelcome() {
   function statusCard(key, count) {
     const m = STATUS_META[key];
     return '<div class="status-card ' + key + '">'
-      + '<div class="status-card-head"><span>' + esc(m.label) + '</span>'
+      + '<div class="status-card-head"><span>' + esc(m.short) + '</span>'
       + '<span class="status-card-count">' + count + '</span></div>'
-      + '<div class="status-card-rule">' + esc(m.rule) + '</div>'
-      + '<div class="status-card-desc">' + m.desc + '</div></div>';
+      + '<div class="status-card-rule">' + esc(m.rule) + '</div></div>';
   }
 
-  const catNote = currentLayerKey === 'overall' ? ''
-    : '<div class="fact-title" style="margin-top:18px">'
-      + esc(CATEGORY_META[currentLayerKey].title) + '</div>'
-      + '<p class="welcome-body">' + CATEGORY_META[currentLayerKey].note + '</p>';
-
+  const cat = currentLayerKey === 'overall' ? null : CATEGORY_META[currentLayerKey];
+  const yes = cat ? categoryCount(currentLayerKey) : 0;
   document.getElementById('panel-content').innerHTML =
     '<div class="welcome-wrap">'
-    + '<div class="welcome-title">Community solar and community-owned solar</div>'
-    + '<p class="welcome-body">Community solar (CS) lets households that cannot install their own '
-    + 'panels subscribe to a shared array in their utility service area. Community-owned solar (COS) '
-    + 'goes further: the project is collectively owned by local stakeholders, shareholders or users, '
-    + 'who hold voting power and receive the benefits directly. A state can have the first without '
-    + 'the second.</p>'
-    + '<p class="welcome-body">Click any jurisdiction for its full report, or use the buttons above '
-    + 'the map to view each of the three policy categories on its own.</p>'
-    + '<div class="fact-title" style="margin-top:18px">The three map statuses</div>'
-    + '<div class="status-guide">'
-    + statusCard('both', c.both)
-    + statusCard('cs',   c.cs)
-    + statusCard('none', c.none)
-    + '</div>'
-    + catNote
+    + (cat
+        ? '<div class="fact-title">' + esc(cat.title) + '</div>'
+          + '<div class="cat-count"><span class="db-dot" style="background:' + cat.color
+            + '"></span>Yes &middot; ' + yes + ' of ' + ALL_NAMES.length + ' jurisdictions</div>'
+          + '<p class="welcome-body">' + cat.note + '</p>'
+        : '<div class="fact-title">Overall status</div>'
+          + '<div class="status-guide">'
+          + statusCard('both', c.both)
+          + statusCard('cs',   c.cs)
+          + statusCard('none', c.none)
+          + '</div>')
     + '</div>';
   document.getElementById('info-panel').scrollTop = 0;
 }
@@ -1145,7 +916,7 @@ function showStateReport(stateName) {
   }
   const policiesHtml =
     '<div class="fact-section">'
-    + '<div class="fact-title">Policies at a glance</div>'
+    + '<div class="fact-title">Enabling/Inhibiting Policies and Programs</div>'
     + '<div class="policy-list">'
     + policyItem('Virtual or Remote Net Metering', pol.vnm)
     + policyItem('Community Solar', pol.cs)
@@ -1161,16 +932,17 @@ function showStateReport(stateName) {
   }
   const detailRows = detailRow('Size', det.size)
     + detailRow('Eligibility', det.eligibility)
-    + detailRow('Benefit Dist.', det.benefitDist);
+    + detailRow('Benefit Distribution', det.benefitDist);
   // Collapsed by default: for states with an active program this block runs
   // to ~1,000 characters, which swamped the panel when it sat open while
   // every other long section was behind an accordion.
   const detailsHtml = detailRows
-    ? accordion('Program details', '<div class="detail-rows">' + detailRows + '</div>')
+    ? accordion('Details regarding enabling/inhibiting policies and programs',
+                '<div class="detail-rows">' + detailRows + '</div>')
     : '';
 
   const citiesHtml = (r.activeCities && r.activeCities.trim())
-    ? accordion('Active cities & communities', blocks(r.activeCities)) : '';
+    ? accordion('Active Cities/Communities', blocks(r.activeCities)) : '';
   const sourcesHtml = sources.length
     ? accordion('References (' + sources.length + ')',
         '<ul class="sources-list">'
@@ -1190,9 +962,9 @@ function showStateReport(stateName) {
       + (key === 'none' ? ';color:#33414c' : ';color:#ffffff') + '">'
       + esc(meta.short) + '</span>'
     + '<div class="report-pills">'
-      + pill('Community solar', isYes(pol.cs))
-      + pill('Community ownership support', isYes(pol.other))
-      + pill('Virtual / remote net metering', isYes(pol.vnm))
+      + pill('Community Solar', isYes(pol.cs))
+      + pill('Other State Support for Community-Owned Solar', isYes(pol.other))
+      + pill('Virtual or Remote Net Metering', isYes(pol.vnm))
     + '</div>'
     + '</div>'
     + '<div class="report-body">'
@@ -1275,7 +1047,7 @@ function sortList(key) {
 
 function renderList() {
   const rows = filteredRows();
-  ['name','type','status','vnm','cs','other'].forEach(function(k) {
+  ['name','status','vnm','cs','other'].forEach(function(k) {
     const el = document.getElementById('sa-' + k);
     if (el) el.textContent = (sortKey === k) ? (sortDir === 1 ? '▲' : '▼') : '';
   });
@@ -1283,20 +1055,21 @@ function renderList() {
   document.getElementById('list-count').textContent =
     rows.length + ' of ' + ALL_NAMES.length + ' jurisdictions';
   if (!rows.length) {
-    body.innerHTML = '<tr><td colspan="7" class="db-empty">No jurisdictions match those filters.</td></tr>';
+    body.innerHTML = '<tr><td colspan="5" class="db-empty">No jurisdictions match those filters.</td></tr>';
     return;
+  }
+  function mark(v) {
+    return v === 'Yes' ? '<span class="mk-yes">Yes</span>' : '<span class="mk-no">No</span>';
   }
   body.innerHTML = rows.map(function(row) {
     const m = STATUS_META[row.status];
     return '<tr onclick="openFromList(' + JSON.stringify(row.name).replace(/"/g, '&quot;') + ')">'
       + '<td class="db-name">' + esc(row.label) + '</td>'
-      + '<td class="db-type">' + row.type + '</td>'
       + '<td><span class="db-status"><span class="db-dot" style="background:' + m.color + '"></span>'
         + esc(m.short) + '</span></td>'
-      + '<td>' + ynBadge(row.vnm) + '</td>'
-      + '<td>' + ynBadge(row.cs) + '</td>'
-      + '<td>' + ynBadge(row.other) + '</td>'
-      + '<td class="db-summary">' + esc(row.landscape) + '</td>'
+      + '<td class="num">' + mark(row.vnm) + '</td>'
+      + '<td class="num">' + mark(row.cs) + '</td>'
+      + '<td class="num">' + mark(row.other) + '</td>'
       + '</tr>';
   }).join('');
 }
@@ -1314,7 +1087,7 @@ function downloadCsv() {
                 'Community-owned solar landscape'];
   function q(v) { return '"' + String(v === undefined || v === null ? '' : v).replace(/"/g, '""') + '"'; }
   const csv = [head.map(q).join(',')].concat(rows.map(function(r) {
-    return [r.label, r.type, STATUS_META[r.status].label, r.vnm, r.cs, r.other, r.landscape]
+    return [r.label, r.type, STATUS_META[r.status].short, r.vnm, r.cs, r.other, r.landscape]
       .map(q).join(',');
   })).join('\r\n');
   const url = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' }));
