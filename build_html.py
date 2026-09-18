@@ -25,12 +25,11 @@ html = r"""<!DOCTYPE html>
       --primary-bg:     #f0fdfa;
       --primary-bg2:    #ccfbf1;
 
-      /* Overall-status palette: a four-step sequential ramp, since the status
-         is an ordered count. "No data" reads as No, so it lands in the grey. */
-      --st-y3:      #14713d;   /* yes to 3 of the 3 categories */
-      --st-y2:      #4c9f70;   /* yes to 2 of the 3 categories */
-      --st-y1:      #a8d5ba;   /* yes to 1 of the 3 categories */
-      --st-y0:      #c3ccd4;   /* yes to none of the 3 categories */
+      /* Overall-status palette: three high-contrast hues.
+         "No data" is folded into "no enabling policy" (grey). */
+      --st-both:    #14713d;   /* CS + state support for community ownership */
+      --st-cs:      #e2711d;   /* community solar only */
+      --st-none:    #c3ccd4;   /* no enabling policy / no data */
 
       /* Single-category layers, matching the report's Fig. 1 colours */
       --cat-vnm:    #2e7d32;
@@ -206,10 +205,9 @@ html = r"""<!DOCTYPE html>
       border: 1px solid var(--slate-200); border-left-width: 5px;
       border-radius: 8px; padding: 10px 12px; background: var(--slate-50);
     }
-    .status-card.y3 { border-left-color: var(--st-y3); }
-    .status-card.y2 { border-left-color: var(--st-y2); }
-    .status-card.y1 { border-left-color: var(--st-y1); }
-    .status-card.y0 { border-left-color: var(--st-y0); }
+    .status-card.both { border-left-color: var(--st-both); }
+    .status-card.cs   { border-left-color: var(--st-cs); }
+    .status-card.none { border-left-color: var(--st-none); }
     .status-card-head {
       display: flex; align-items: baseline; justify-content: space-between; gap: 8px;
       font-size: 0.8rem; font-weight: 700; color: var(--slate-800); margin-bottom: 4px;
@@ -471,8 +469,8 @@ html = r"""<!DOCTYPE html>
       <div class="segmented" id="layer-seg">
         <button class="seg-btn active" data-layer="overall" onclick="setLayer('overall')">Overall status</button>
         <button class="seg-btn" data-layer="vnm"   onclick="setLayer('vnm')">Virtual or Remote Net Metering</button>
-        <button class="seg-btn" data-layer="cs"    onclick="setLayer('cs')">Community Solar</button>
-        <button class="seg-btn" data-layer="other" onclick="setLayer('other')">Other State Support for Community-Owned Solar</button>
+        <button class="seg-btn" data-layer="cs"    onclick="setLayer('cs')">CS policies</button>
+        <button class="seg-btn" data-layer="other" onclick="setLayer('other')">Other State Support for COS</button>
       </div>
     </div>
 
@@ -497,10 +495,9 @@ html = r"""<!DOCTYPE html>
              placeholder="Search jurisdictions and policy text&hellip;" oninput="renderList()">
       <select id="filter-status" class="filter-select" onchange="renderList()">
         <option value="">All statuses</option>
-        <option value="y3">3 of 3 categories: Yes</option>
-        <option value="y2">2 of 3 categories: Yes</option>
-        <option value="y1">1 of 3 categories: Yes</option>
-        <option value="y0">0 of 3 categories: Yes</option>
+        <option value="both">COS Policies and Programs</option>
+        <option value="cs">Policies and Programs for CS only</option>
+        <option value="none">No CS and COS Policies and Programs</option>
       </select>
       <select id="filter-type" class="filter-select" onchange="renderList()">
         <option value="">States, DC &amp; territories</option>
@@ -553,18 +550,22 @@ html += r"""
    CLASSIFICATION
    ════════════════════════════════════
 
-   The overall status is the count of "Yes" answers across the three "yes or
-   no" categories on each state's page in the report:
+   Community solar and community-owned solar are NOT the same thing, so the
+   overall status is derived from the two distinct "yes or no" categories on
+   each state's page in the report:
 
-     · Virtual or Remote Net Metering           -> pol.vnm
      · Community Solar                          -> pol.cs
      · Other State Support for Community-Owned
        Solar                                    -> pol.other
 
-   y3 / y2 / y1 / y0 = Yes to three, two, one, or none of them. The label is
-   the tally itself, so it asserts nothing the report's own columns don't say;
-   weighing the categories against each other would be a judgement call. "No
-   data" reads as No, and so folds into y0.
+   both  = the state answers Yes to both, i.e. community solar exists AND the
+           state directs funding or an incentive structure toward community
+           ownership.
+   cs    = community solar (or the virtual/remote net metering that underpins
+           it) exists, but nothing in state policy supports community
+           OWNERSHIP -> limited.
+   none  = No to all three categories. "No data" is folded in here, so the map
+           uses exactly three colours.
    ════════════════════════════════════ */
 
 const TERRITORIES = {
@@ -596,27 +597,35 @@ function jType(name) {
 }
 function isYes(p) { return !!(p && p.status === 'Yes'); }
 
-function yesCount(name) {
+function overallStatus(name) {
   const r = STATE_REPORTS[name];
-  const p = (r && r.policies) || {};
-  return (isYes(p.vnm) ? 1 : 0) + (isYes(p.cs) ? 1 : 0) + (isYes(p.other) ? 1 : 0);
+  if (!r || !r.policies) return 'none';
+  const p = r.policies;
+  if (isYes(p.cs) && isYes(p.other)) return 'both';
+  if (isYes(p.cs) || isYes(p.vnm))   return 'cs';
+  return 'none';
 }
-function overallStatus(name) { return 'y' + yesCount(name); }
 
-/* Each status is just the tally of "Yes" answers across the report's three
-   categories, so the label states a count and nothing editorial. */
+/* Labels are the report's own category names; each status is stated as the
+   yes/no rule that produces it, so nothing here is editorial. */
 const STATUS_META = {
-  y3: { color: '#14713d', dark: false, short: '3 of 3 categories: Yes',
-        rule: 'Virtual or Remote Net Metering, Community Solar, and Other State '
-            + 'Support for Community-Owned Solar: all Yes' },
-  y2: { color: '#4c9f70', dark: false, short: '2 of 3 categories: Yes',
-        rule: 'Yes to two of the three categories' },
-  y1: { color: '#a8d5ba', dark: true,  short: '1 of 3 categories: Yes',
-        rule: 'Yes to one of the three categories' },
-  y0: { color: '#c3ccd4', dark: true,  short: '0 of 3 categories: Yes',
-        rule: 'No to all three categories' }
+  both: {
+    color: '#14713d',
+    short: 'COS Policies and Programs',
+    rule:  'Community Solar: Yes  \u00b7  Other State Support for Community-Owned Solar: Yes'
+  },
+  cs: {
+    color: '#e2711d',
+    short: 'Policies and Programs for CS only',
+    rule:  'Community Solar or Virtual or Remote Net Metering: Yes  \u00b7  '
+         + 'Other State Support for Community-Owned Solar: No'
+  },
+  none: {
+    color: '#c3ccd4',
+    short: 'No CS and COS Policies and Programs',
+    rule:  'No to all three categories'
+  }
 };
-const STATUS_KEYS = ['y3', 'y2', 'y1', 'y0'];
 
 /* Single-category layers: the three "yes or no" columns from the report, in
    the colours used for Figs. 1-3. Each `note` is quoted from Key Findings. */
@@ -649,8 +658,7 @@ const OFF_COLOR = '#c3ccd4';
 const ALL_NAMES = Object.keys(STATE_REPORTS).sort();
 
 function statusCounts() {
-  const c = {};
-  STATUS_KEYS.forEach(function(k) { c[k] = 0; });
+  const c = { both: 0, cs: 0, none: 0 };
   ALL_NAMES.forEach(function(n) { c[overallStatus(n)]++; });
   return c;
 }
@@ -723,10 +731,10 @@ function renderLegend() {
   if (!el) return;
   if (currentLayerKey === 'overall') {
     const c = statusCounts();
-    el.innerHTML = '<div class="legend-title">Community owned solar policies and programs</div>'
-      + STATUS_KEYS.map(function(k) {
-          return legendRow(STATUS_META[k].color, STATUS_META[k].short, c[k]);
-        }).join('');
+    el.innerHTML = '<div class="legend-title">CS and COS Policies and Programs</div>'
+      + legendRow(STATUS_META.both.color, STATUS_META.both.short, c.both)
+      + legendRow(STATUS_META.cs.color,   STATUS_META.cs.short,   c.cs)
+      + legendRow(STATUS_META.none.color, STATUS_META.none.short, c.none);
   } else {
     const m = CATEGORY_META[currentLayerKey];
     const yes = categoryCount(currentLayerKey);
@@ -899,7 +907,9 @@ function showWelcome() {
           + '<p class="welcome-body">' + cat.note + '</p>'
         : '<div class="fact-title">Overall status</div>'
           + '<div class="status-guide">'
-          + STATUS_KEYS.map(function(k) { return statusCard(k, c[k]); }).join('')
+          + statusCard('both', c.both)
+          + statusCard('cs',   c.cs)
+          + statusCard('none', c.none)
           + '</div>')
     + '</div>';
   document.getElementById('info-panel').scrollTop = 0;
@@ -987,7 +997,7 @@ function showStateReport(stateName) {
     + '<button class="report-back" onclick="resetMapView()">&#8592; All jurisdictions</button>'
     + '<div class="report-state-name">' + esc(disp(stateName)) + '</div>'
     + '<span class="report-status-badge" style="background:' + meta.color
-      + (meta.dark ? ';color:#33414c' : ';color:#ffffff') + '">'
+      + (key === 'none' ? ';color:#33414c' : ';color:#ffffff') + '">'
       + esc(meta.short) + '</span>'
     + '<div class="report-pills">'
       + pill('Community Solar', isYes(pol.cs))
@@ -1025,7 +1035,7 @@ function setView(v) {
    LIST / DATABASE VIEW
    ════════════════════════════════════ */
 let sortKey = 'name', sortDir = 1;
-const STATUS_ORDER = { y3: 0, y2: 1, y1: 2, y0: 3 };
+const STATUS_ORDER = { both: 0, cs: 1, none: 2 };
 
 function listRows() {
   return ALL_NAMES.map(function(n) {
