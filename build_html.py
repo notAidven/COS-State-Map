@@ -561,11 +561,12 @@ html += r"""
    both  = the state answers Yes to both, i.e. community solar exists AND the
            state directs funding or an incentive structure toward community
            ownership.
-   cs    = community solar (or the virtual/remote net metering that underpins
-           it) exists, but nothing in state policy supports community
-           OWNERSHIP -> limited.
-   none  = No to all three categories. "No data" is folded in here, so the map
-           uses exactly three colours.
+   cs    = community solar exists, but nothing in state policy supports
+           community OWNERSHIP -> limited.
+   none  = no community solar policy. Virtual/remote net metering alone does
+           not count (West Virginia, Pennsylvania), matching the state pages,
+           which say those states have no policies enabling community solar.
+           "No data" is folded in here, so the map uses exactly three colours.
    ════════════════════════════════════ */
 
 const TERRITORIES = {
@@ -602,7 +603,7 @@ function overallStatus(name) {
   if (!r || !r.policies) return 'none';
   const p = r.policies;
   if (isYes(p.cs) && isYes(p.other)) return 'both';
-  if (isYes(p.cs) || isYes(p.vnm))   return 'cs';
+  if (isYes(p.cs))                   return 'cs';
   return 'none';
 }
 
@@ -617,13 +618,12 @@ const STATUS_META = {
   cs: {
     color: '#e2711d',
     short: 'Policies and Programs for CS only',
-    rule:  'Community Solar or Virtual or Remote Net Metering: Yes  \u00b7  '
-         + 'Other State Support for Community-Owned Solar: No'
+    rule:  'Community Solar: Yes  \u00b7  Other State Support for Community-Owned Solar: No'
   },
   none: {
     color: '#c3ccd4',
     short: 'No CS and COS Policies and Programs',
-    rule:  'No to all three categories'
+    rule:  'Community Solar: No'
   }
 };
 
